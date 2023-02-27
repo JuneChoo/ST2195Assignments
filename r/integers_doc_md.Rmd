@@ -1,0 +1,16 @@
+---
+title: "integers_doc_md"
+author: "JuneZhu"
+date: "2023-02-27"
+output: html_document
+---
+
+## Part2 R section
+
+R script that prints all integers between 1 and 10 (including 1 and 10) to screen. Here is one of the multiple ways to implement this function. It's more like a pythonic way since I prefer coding in python.
+
+```{r integers between 1 and 10}
+for (i in 1:10){
+  print(i)
+}
+```
