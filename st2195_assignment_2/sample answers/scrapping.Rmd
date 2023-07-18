@@ -1,0 +1,131 @@
+cd
+---
+title: "Assignment 2"
+output:
+  html_document:
+    df_print: paged
+---
+### Load the library
+
+
+
+
+
+Install the `rvest` package if it is not yet installed
+```{r}
+if (!("rvest" %in% installed.packages())) {
+  install.packages("rvest")
+}
+library(rvest)
+```
+
+### Get the csv example
+
+Load in the html
+```{r}
+csv_wiki <- read_html("https://en.wikipedia.org/wiki/Comma-separated_values")
+```
+
+```{r}
+print(csv_wiki)
+```
+
+
+
+
+
+```{r}
+library(httr)
+library(XML)
+
+url <- "https://en.wikipedia.org/wiki/Comma-separated_values"
+
+r <- GET(url)
+
+doc <- readHTMLTable(
+  doc=content(r, "text"))
+
+table <-doc[6]
+
+df =data.frame(table)
+
+colnames(df) = df[1,]
+
+df = df[-1,]
+
+df
+```
+
+
+Get the csv examples under the header "Example"
+
+```{r}
+csv_tables <- csv_wiki %>% html_nodes(xpath = '//h2[contains(., "Example")]//following-sibling::pre') %>% html_text()
+
+```
+
+Have a look of the tables:
+```{r}
+csv_tables[1]
+```
+
+The first table is what we want.
+```{r}
+csv_table <- csv_tables[1]
+```
+
+### Save the csv example into a csv file
+```{r}
+write.table(csv_table, file = "car.csv", quote = FALSE, col.names = FALSE, row.names = FALSE)
+```
+
+Reload the csv data from the file to make sure the data was saved properly
+```{r}
+data <- read.csv("car.csv")
+data[1:2,]
+```
+
+
+
+```{r}
+typeof(data$Year)
+mean(data$Price)
+```
+
+```{r}
+summary(data)
+```
+
+```{r}
+table(data$Year)
+```
+
+
+```{r}
+dim(data)
+head(data, 2)
+
+
+```
+
+
+```{r}
+
+## maximum price of the cars
+max(data$Price)
+
+
+## which car maximum price of the cars
+data[which.max(data$Price), 'Make' ]
+```
+
+
+```{r}
+boxplot(data$Price)
+
+plot(data$Year, data$Price)
+
+
+
+```
+
